@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>List Animation</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+      }
+
+      .parent {
+        position: relative;
+        width: 800px;
+        margin: 50px auto;
+        padding: 20px;
+        background-color: #f0f0f0;
+        border-radius: 10px;
+      }
+
+      .list-item {
+        padding: 10px;
+        margin: 5px 0;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+      .list-item-width {
+        width: 330px;
+      }
+
+      .list-item:hover {
+        background-color: #ddd;
+      }
+
+      .overlay {
+        position: absolute;
+        top: 0;
+        right: -100%;
+        width: 50%;
+        height: 85%;
+        background-color: #fff;
+        z-index: 1;
+        overflow-y: auto;
+        padding: 20px;
+        box-shadow: -5px 0 15px rgba(0, 0, 0, 0.3);
+        transition: right 0.3s ease;
+      }
+      .hide {
+        display: none;
+      }
+
+      .overlay.active {
+        right: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="parent">
+      <div class="list-item" style="background-color: #ff9999">Item 1</div>
+      <div class="list-item" style="background-color: #99ccff">Item 2</div>
+      <div class="list-item" style="background-color: #99ff99">Item 3</div>
+      <div class="list-item" style="background-color: #ffff99">Item 4</div>
+      <div class="list-item" style="background-color: #cc99ff">Item 5</div>
+
+      <div class="overlay hide">
+        <h2>Overlay Content</h2>
+        <p>This is the content that appears when an item is clicked.</p>
+      </div>
+    </div>
+
+    <script>
+      const listItems = document.querySelectorAll(".list-item");
+      const overlay = document.querySelector(".overlay");
+      let currentItem = null;
+
+      listItems.forEach((item) => {
+        item.addEventListener("click", () => {
+          if (item.textContent === currentItem) {
+            overlay.classList.toggle("active");
+            setTimeout(() => {
+              overlay.classList.toggle("hide");
+              listItems.forEach((listItem) => {
+                listItem.classList.remove("list-item-width");
+              });
+            }, 100);
+            currentItem = null;
+          } else {
+            overlay.innerHTML = `<h2>${item.textContent}</h2>`;
+            overlay.classList.remove("hide");
+            setTimeout(() => {
+              overlay.classList.add("active");
+              listItems.forEach((listItem) => {
+                listItem.classList.add("list-item-width");
+              });
+            }, 10);
+            currentItem = item.textContent;
+          }
+        });
+      });
+    </script>
+  </body>
+</html>
